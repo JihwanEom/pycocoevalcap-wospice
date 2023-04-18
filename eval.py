@@ -57,12 +57,13 @@ class COCOEvalCap:
                 for sc, m in zip(score, method):
                     self.setEval(sc, m)
                     if "CLIP" in m:
-                        scores = [i[m] for i in scores]
+                        scores_clip = [i[m] for i in scores]
+                        self.setImgToEvalImgs(scores_clip, gts.keys(), m)
                     elif 'Bleu' in m:
-                        scores = scores[method.index(m)]
+                        scores_bleu = scores[method.index(m)]
+                        self.setImgToEvalImgs(scores_bleu, gts.keys(), m)
                     else:
-                        scores = scores
-                    self.setImgToEvalImgs(scores, gts.keys(), m)
+                        self.setImgToEvalImgs(scores, gts.keys(), m)
                     print("%s: %0.3f"%(m, sc))
             else:
                 self.setEval(score, method)
